@@ -16,14 +16,6 @@ class TestBaseModelTask3(unittest.TestCase):
     Test all the feature of the task 3 on the Base Model Class
     """
 
-    def createModel(self):
-        """
-        Create to instance of the Base Model
-        """
-        myModelOne = BaseModel()
-        time.sleep(0, 5)
-        myModelTwo = BaseModel()
-
     def test_doc(self):
         """
         Check all the doc of the BaseModel Class
@@ -38,7 +30,7 @@ class TestBaseModelTask3(unittest.TestCase):
 
         module_class = len(BaseModel.__init__.__doc__)
         self.assertGreater(module_class, 0)
-        
+
         module_class = len(BaseModel.__str__.__doc__)
         self.assertGreater(module_class, 0)
 
@@ -48,37 +40,49 @@ class TestBaseModelTask3(unittest.TestCase):
         module_class = len(BaseModel.to_dict.__doc__)
         self.assertGreater(module_class, 0)
 
+    def setUp(self):
+        """setUp all instance we need"""
+        self.my_model1 = BaseModel()
+        self.my_model2 = BaseModel()
+        self.my_model1.name = "My_First_Model"
+        self.my_model1.my_number = 89
+        self.my_model_json = self.my_model1.to_dict()
+
+    def tearDown(self):
+        """tearDown delete all instance"""
+        del self.my_model1
+        del self.my_model2
+        del self.my_model_json
+
     def test_idStr(self):
-        self.assertEqual(type(myModel.id), str)
+        self.assertEqual(type(self.my_model1.id), str)
 
     def test_uniqueId(self):
-        self.assertNotEqual(myModelOne.id, myModelTwo.id)
+        self.assertNotEqual(self.my_model1.id, self.my_model2.id)
 
     def test_DateTimeCreated(self):
-        self.assertEqual(myModel.created_at, myModel.update_at)
-        self.assertNotEqual(myModelOne.created_at, myModelTwo.created_at)
-        self.assertNotEqual(myModelOne.update_at, myModelTwo.updated_at)
-        myModelTwo.save()
-        self.assertNotEqual(myModelTwo.created_at, myModelTwo.updated_at)
+        self.assertEqual(self.my_model1.created_at, self.my_model1.updated_at)
+        self.assertNotEqual(self.my_model1.created_at, self.my_model2.created_at)
+        self.assertNotEqual(self.my_model1.updated_at, self.my_model2.updated_at)
+        self.my_model2.save()
+        self.assertNotEqual(self.my_model2.created_at, self.my_model2.updated_at)
 
     def test_strRepr(self):
-        strRep = myModelOne.__str__
-        self.assertIn(f"[BaseModel] ({myModelOne.id}): ", strRep)
-        self.assertIn(f"'id': '{myModelOne.id}'", strRep)
-        """
-        ...
-        """
+        strRep = self.my_model1.__str__()
+        self.assertIn(f"[BaseModel] ({self.my_model1.id})", strRep)
+        self.assertIn(f"'id': '{self.my_model1.id}'", strRep)
+        self.assertIn(f"'created_at': '{self.my_model1.created_at}'", strRep)
+        self.assertIn(f"'udpated_at': '{self.my_model1.updated_at}'", strRep)
 
     def test_ToDictContainsAddedAttributes(self):
-        myModelOne.name = "Holberton"
-        myModelOne.my_number = 98
-        self.assertIn("name", myModelOne.to_dict())
-        self.assertIn("my_number", myModelOne.to_dict())
+        self.assertIn("name", self.my_model_json)
+        self.assertIn("my_number", self.my_model_json)
+
 
 class TestBaseConstructor(unittest.TestCase):
-    '''
+    """
     The class for test the constructor of base models
-    '''
+    """
 
     def setUp(self):
         """setUp all instance we need"""
