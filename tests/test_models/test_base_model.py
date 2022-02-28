@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 import unittest
-import doctest
+import pycodestyle
 import time
 from datetime import datetime
+from models import base_model
 from models.base_model import BaseModel
-
-BaseModel = __import__("base_model.py").max_integer
 
 """
 Unitest for the base model class
@@ -29,6 +28,22 @@ class TestBaseModelTask3(unittest.TestCase):
         """
         Check all the doc of the BaseModel Class
         """
+        # module documentation
+        module = len(base_model.__doc__)
+        self.assertGreater(module, 0)
+
+        # class documentation
+        module_class = len(BaseModel.__doc__)
+        self.assertGreater(module_class, 0)
+
+        module_class = len(BaseModel.__str__.__doc__)
+        self.assertGreater(module_class, 0)
+
+        module_class = len(BaseModel.save.__doc__)
+        self.assertGreater(module_class, 0)
+
+        module_class = len(BaseModel.to_dict.__doc__)
+        self.assertGreater(module_class, 0)
 
     def test_idStr(self):
         self.assertEqual(type(myModel.id), str)
