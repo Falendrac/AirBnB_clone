@@ -2,6 +2,8 @@
 import unittest
 import doctest
 import time
+from datetime import datetime
+from models.base_model import BaseModel
 
 BaseModel = __import__("base_model.py").max_integer
 
@@ -54,3 +56,49 @@ class TestBaseModelTask3(unittest.TestCase):
         myModelOne.my_number = 98
         self.assertIn("name", myModelOne.to_dict())
         self.assertIn("my_number", myModelOne.to_dict())
+
+class TestBaseConstructor(unittest.TestCase):
+    '''
+    The class for test the constructor of base models
+    '''
+
+    def setUp(self):
+        """setUp all instance we need"""
+        self.my_model = BaseModel()
+        self.my_model.name = "My_First_Model"
+        self.my_model.my_number = 89
+        self.my_model_json = self.my_model.to_dict()
+
+        self.my_new_model = BaseModel(**self.my_model_json)
+        self.my_new_model_other = BaseModel(**self.my_model_json)
+
+        self.my_new_model_other.magic_number = 42
+
+        self.other_model = BaseModel(54, "lol", "shakazulu", 34643)
+
+    def tearDown(self):
+        """tearDown delete all instance"""
+        del self.my_model
+        del self.my_model_json
+        del self.my_new_model
+        del self.my_new_model_other
+        del self.other_model
+
+    def test_base_equal(self):
+        """test all equal cases"""
+        self.assertEqual(self.my_new_model.id, self.my_model.id)
+        self.assertEqual(self.my_new_model_other.id, self.my_model.id)
+        self.assertEqual(self.my_new_model.__str__(), self.my_model.__str__())
+        self.assertEqual(type(self.my_new_model.created_at), datetime)
+        self.assertEqual(type(self.other_model.created_at), datetime)
+
+    def test_base_notequal(self):
+        """test all not equal cases"""
+        self.assertNotEqual(self.my_new_model_other, self.my_new_model)
+        self.assertNotEqual(self.my_new_model.id, self.other_model.id)
+        self.assertNotEqual(self.my_new_model.__str__(), self.other_model.__str__())
+
+    def test_base_false(self):
+        """test all false cases"""
+        self.assertFalse(self.my_model is self.my_new_model)
+        self.assertFalse(self.other_model is self.my_new_model)
