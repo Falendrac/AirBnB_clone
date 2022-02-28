@@ -36,6 +36,9 @@ class TestBaseModelTask3(unittest.TestCase):
         module_class = len(BaseModel.__doc__)
         self.assertGreater(module_class, 0)
 
+        module_class = len(BaseModel.__init__.__doc__)
+        self.assertGreater(module_class, 0)
+        
         module_class = len(BaseModel.__str__.__doc__)
         self.assertGreater(module_class, 0)
 
