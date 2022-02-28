@@ -40,6 +40,14 @@ class TestBaseModelTask3(unittest.TestCase):
         module_class = len(BaseModel.to_dict.__doc__)
         self.assertGreater(module_class, 0)
 
+    def test_pycodeStyle(self):
+        """Test that we conform to PEP-8."""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(["models/base_model.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (pycodestyle)."
+        )
+
     def setUp(self):
         """setUp all instance we need"""
         self.my_model1 = BaseModel()
@@ -71,8 +79,8 @@ class TestBaseModelTask3(unittest.TestCase):
         strRep = self.my_model1.__str__()
         self.assertIn(f"[BaseModel] ({self.my_model1.id})", strRep)
         self.assertIn(f"'id': '{self.my_model1.id}'", strRep)
-        self.assertIn(f"'created_at': '{self.my_model1.created_at}'", strRep)
-        self.assertIn(f"'udpated_at': '{self.my_model1.updated_at}'", strRep)
+        self.assertIn(f"'created_at': {repr(self.my_model1.created_at)}", strRep)
+        self.assertIn(f"'updated_at': {repr(self.my_model1.updated_at)}", strRep)
 
     def test_ToDictContainsAddedAttributes(self):
         self.assertIn("name", self.my_model_json)
