@@ -40,10 +40,6 @@ class BaseModel:
         """
         dictJson = self.__dict__.copy()
         dictJson["__class__"] = self.__class__.__name__
-        dictJson["created_at"] = datetime.isoformat(
-            datetime.strptime(str(self.created_at), "%Y-%m-%d %H:%M:%S.%f")
-        )
-        dictJson["updated_at"] = datetime.isoformat(
-            datetime.strptime(str(self.updated_at), "%Y-%m-%d %H:%M:%S.%f")
-        )
+        dictJson["created_at"] = dictJson["created_at"].isoformat()
+        dictJson["updated_at"] = dictJson["updated_at"].isoformat()
         return dictJson
