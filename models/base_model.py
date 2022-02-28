@@ -6,6 +6,7 @@ Create the Base Model class
 
 import uuid
 from datetime import datetime
+import models
 
 
 class BaseModel:
@@ -22,6 +23,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = timming
             self.updated_at = timming
+            models.storage.new(self)
         else:
             for key, val in kwargs.items():
                 if key != '__class__':
@@ -42,6 +44,7 @@ class BaseModel:
         Save the model base to the current datetime
         """
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """
