@@ -5,6 +5,12 @@ Creation of the console of the web application
 
 import cmd
 from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.state import State
 import models
 
 classes = ("BaseModel", "User", "State", "City", "Amenity", "Place", "Review")
@@ -119,6 +125,14 @@ class HBNBCommand(cmd.Cmd):
         """
         Update an attribute of an instance.
         Usage: update <class name> <id> <attribute name> "<attribute value>"
+        Exceptions:
+            If the name class is missing
+            If the class do not exist
+            Id is missing
+            If the Id do not exist
+            If no instance found
+            If the attribute is missing
+            If the value is missing
         """
         if not line:
             print("** class name missing ** ")
@@ -149,36 +163,53 @@ class HBNBCommand(cmd.Cmd):
         """
         Help section of EOF
         """
-        print('\n'.join(
-            ['Manage the EOF, exit the console and save all the created instance']))
+        print('Manage the EOF, exit the console and save all the created instance\n')
 
     def help_quit(self):
         """
         Help section of quit
         """
-        print('\n'.join(
-            ['Quit function\nUsage quit\nExit the console and save all the created instance']))
+        print(
+            'Quit function\n\
+Usage quit\n\
+Exit the console and save all the created instance\n')
 
     def help_create(self):
         """
         Help section of create
         """
-        print('\n'.join(
-            ['Create function\nUsage create <ClassName>\nCreate a new instance of the given class, print its id']))
+        print(
+            'Create function\n\
+Usage create <ClassName>\n\
+Create a new instance of the given class, print its id\n')
 
     def help_show(self):
         """
         Help section of show
         """
-        print('\n'.join(
-            ['Show a instance by using the Nameclass and its ID\nUsage: show <ClassName> <Id>\nShow the __str__ representation of the class']))
+        print(
+            'Show a instance by using the Nameclass and its ID\n\
+Usage: show <ClassName> <Id>\n\
+Show the __str__ representation of the class\n')
 
     def help_destroy(self):
         """
         Help section of destroy
         """
-        print('\n'.join(
-            ['Destroy a instance by using the Nameclass and its ID\nUsage: destroy <ClassName> <Id>\nDestroy the instance, and save it into the Json file']))
+        print(
+            'Destroy a instance by using the Nameclass and its ID\n\
+Usage: destroy <ClassName> <Id>\n\
+Destroy the instance, and save it into the Json file\n'
+        )
+
+    def help_update(self):
+        """
+        Help section of update
+        """
+        print(
+            'Update an attribute of an instance.\n\
+Usage: update <class name> <id> <attribute name> "<attribute value>"\n'
+        )
 
 
 if __name__ == '__main__':
