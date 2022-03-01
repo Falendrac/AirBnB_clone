@@ -5,6 +5,7 @@ Module for Review class
 
 from models.base_model import BaseModel
 
+
 class Review(BaseModel):
     """
     The class Review inherits of BaseModel
