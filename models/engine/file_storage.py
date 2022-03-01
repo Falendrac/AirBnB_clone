@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 import json
-
+from models.base_model import BaseModel
+from models.user import User
 
 """
 Create a file storage class, to store all our data
