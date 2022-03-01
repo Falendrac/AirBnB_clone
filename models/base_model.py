@@ -36,7 +36,7 @@ class BaseModel:
         """
         Create a representation of the str
         """
-        str = f"[BaseModel] ({self.id}) {self.__dict__}"
+        str = f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
         return str
 
     def save(self):
