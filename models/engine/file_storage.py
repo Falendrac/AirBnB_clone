@@ -8,6 +8,7 @@ from models.user import User
 Create a file storage class, to store all our data
 """
 
+
 class FileStorage:
     """
     Class of our data storage
@@ -22,13 +23,13 @@ class FileStorage:
         """
         self.__file_path = 'file.json'
         self.__objects = {}
-    
+
     def all(self):
         """
         Return the dictionary of all our objects
         """
         return self.__objects
-    
+
     def new(self, obj):
         """
         Save the new object given into the obj dict
@@ -47,14 +48,13 @@ class FileStorage:
             dict_json[key] = self.__objects[key].to_dict()
         with open(self.__file_path, "w+", encoding="utf-8") as file:
             json.dump(dict_json, file)
-    
 
     def reload(self):
         """
         Read the saved json file, and realod the content into the __object attribute
         """
         try:
-            with open(self.__file_path,"r+") as file:
+            with open(self.__file_path, "r+") as file:
                 dictJson = json.load(file)
                 for key, value in dictJson.items():
                     self.__objects[key] = eval(value['__class__'])(**value)
