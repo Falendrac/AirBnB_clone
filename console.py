@@ -13,14 +13,42 @@ from models.review import Review
 from models.state import State
 import models
 
-classes = ("BaseModel", "User", "State", "City", "Amenity", "Place", "Review")
-
 
 class HBNBCommand(cmd.Cmd):
     """
     The console class
     """
     prompt = '(hbnb) '
+    classes = {"BaseModel", "User", "State",
+               "City", "Amenity", "Place", "Review"}
+
+    def default(self, line):
+        functionDict = {"all": self.do_all,
+                        "show": self.do_show, "destroy": self.do_destroy, "count": self.do_count}
+        args = line.split(".")
+        command = ""
+        arguments = ""
+        beforeParentheses = 1
+        if len(args) == 1:
+            print(f"*** Unknown syntax: {line}")
+            return False
+        for i in range(len(args[1])):
+            if args[1][i] == "(":
+                beforeParentheses = 0
+            if beforeParentheses:
+                command += args[1][i]
+            else:
+                arguments = args[1][i+1:-1]
+                break
+        if command in functionDict:
+            arguments = arguments.replace(",", "")
+            arguments = arguments.replace('"', '')
+            if not arguments:
+                functionDict[command](str(args[0]))
+            else:
+                functionDict[command](str(args[0] + " " + arguments))
+        else:
+            print(f"*** Unknown syntax: {line}")
 
     def emptyline(self):
         print(end="")
@@ -36,6 +64,13 @@ class HBNBCommand(cmd.Cmd):
         Quit the program
         """
         return True
+
+    def do_count(self, line):
+        count = 0
+        for instance in models.storage.all().values():
+            if instance.__class__.__name__ == line:
+                count += 1
+        print(count)
 
     def do_create(self, className):
         """
@@ -68,7 +103,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing ** ")
             return False
         data = line.split(" ")
-        if data[0] not in classes:
+        if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
         if len(data) == 1:
@@ -94,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing ** ")
             return False
         data = line.split(" ")
-        if data[0] not in classes:
+        if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
         if len(data) == 1:
@@ -108,12 +143,18 @@ class HBNBCommand(cmd.Cmd):
         models.storage.save()
 
     def do_all(self, line):
+        """
+        Display all instance of a class
+        Usage: all <className>
+        Exceptions:
+            If the class do not exist
+        """
         instanceListStr = []
         if not line:
             for instance in models.storage.all().values():
                 instanceListStr.append(instance.__str__())
         else:
-            if line not in classes:
+            if line not in self.classes:
                 print("** class doesn't exist **")
                 return False
             for instance in models.storage.all().values():
@@ -138,7 +179,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing ** ")
             return False
         data = line.split(" ")
-        if data[0] not in classes:
+        if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
         if len(data) == 1:
@@ -202,6 +243,15 @@ Usage: destroy <ClassName> <Id>\n\
 Destroy the instance, and save it into the Json file\n'
         )
 
+    def help_all(self):
+        """
+        Help section of all
+        """
+        print("Display all instance of a class\n\
+Usage: all <className>\n\
+        "
+              )
+
     def help_update(self):
         """
         Help section of update
@@ -214,3 +264,38 @@ Usage: update <class name> <id> <attribute name> "<attribute value>"\n'
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
+
+
+"""
+line = <className > .update( < id > , < attribute > , < value > )
+
+command < className > <id > <attribute > <value >
+
+line.split(".")
+[ < className > , update( < id > , < attribute > , < value > )]
+
+
+for i in range(len(args[1]))
+  beforePar = 0
+   if args[1][i] == "(":
+        beforePar = 1
+    if beforePar == 0:
+        command += args[1][i]
+    else:
+        argument += args[1][i+1:-1]
+        break
+    argument = argument.replace(",", "")
+
+
+update = command = do_command = > dict {"update": self.do_update}
+<className > = args[0]
+arguement = "<id> <attribute> <value>"
+
+do_command(f{args[0]} {arguement})
+
+
+
+
+update <className> <id> <attrbite> <value> 
+update <className> <id> {id: 19328743, bite: 2929382874892cm} 
+"""
