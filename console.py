@@ -13,14 +13,52 @@ from models.review import Review
 from models.state import State
 import models
 
-classes = ("BaseModel", "User", "State", "City", "Amenity", "Place", "Review")
-
 
 class HBNBCommand(cmd.Cmd):
     """
     The console class
     """
     prompt = '(hbnb) '
+    classes = {"BaseModel", "User", "State",
+               "City", "Amenity", "Place", "Review"}
+
+    def default(self, line):
+        """
+        Default section, all the command not built-in gonna be procces here
+        Process all the command line as : ClassName.function, where function is:
+            all()
+            show()
+            destroy()
+            count()
+        Exceptions:
+            If the syntaxe is not know
+        """
+        functionDict = {"all": self.do_all,
+                        "show": self.do_show, "destroy": self.do_destroy, "count": self.do_count}
+        args = line.split(".")
+        command = ""
+        arguments = ""
+        beforeParentheses = 1
+        if len(args) == 1:
+            print(f"*** Unknown syntax: {line}")
+            return False
+        for i in range(len(args[1])):
+            if args[1][i] == "(":
+                beforeParentheses = 0
+            if beforeParentheses:
+                command += args[1][i]
+            else:
+                arguments = args[1][i+1:-1]
+                break
+        if command in functionDict:
+            arguments = arguments.replace(",", "")
+            arguments = arguments.replace('"', '')
+            if not arguments:
+                functionDict[command](str(args[0]))
+            else:
+                functionDict[command](str(args[0] + " " + arguments))
+        else:
+            print(f"*** Unknown syntax: {line}")
 
     def emptyline(self):
         print(end="")
@@ -36,6 +74,16 @@ class HBNBCommand(cmd.Cmd):
         Quit the program
         """
         return True
+
+    def do_count(self, line):
+        """
+        Count the number of given ClassName instance
+        """
+        count = 0
+        for instance in models.storage.all().values():
+            if instance.__class__.__name__ == line:
+                count += 1
+        print(count)
 
     def do_create(self, className):
         """
@@ -68,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing ** ")
             return False
         data = line.split(" ")
-        if data[0] not in classes:
+        if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
         if len(data) == 1:
@@ -94,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing ** ")
             return False
         data = line.split(" ")
-        if data[0] not in classes:
+        if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
         if len(data) == 1:
@@ -108,12 +156,18 @@ class HBNBCommand(cmd.Cmd):
         models.storage.save()
 
     def do_all(self, line):
+        """
+        Display all instance of a class
+        Usage: all <className>
+        Exceptions:
+            If the class do not exist
+        """
         instanceListStr = []
         if not line:
             for instance in models.storage.all().values():
                 instanceListStr.append(instance.__str__())
         else:
-            if line not in classes:
+            if line not in self.classes:
                 print("** class doesn't exist **")
                 return False
             for instance in models.storage.all().values():
@@ -138,7 +192,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing ** ")
             return False
         data = line.split(" ")
-        if data[0] not in classes:
+        if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
         if len(data) == 1:
@@ -201,6 +255,15 @@ Show the __str__ representation of the class\n')
 Usage: destroy <ClassName> <Id>\n\
 Destroy the instance, and save it into the Json file\n'
         )
+
+    def help_all(self):
+        """
+        Help section of all
+        """
+        print("Display all instance of a class\n\
+Usage: all <className>\n\
+        "
+              )
 
     def help_update(self):
         """

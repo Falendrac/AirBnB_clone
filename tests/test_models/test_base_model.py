@@ -1,14 +1,15 @@
 #!/usr/bin/python3
+"""
+Unitest for the base model class
+"""
+
 import unittest
 import pycodestyle
 import time
 from datetime import datetime
 from models import base_model
 from models.base_model import BaseModel
-
-"""
-Unitest for the base model class
-"""
+import os
 
 
 class TestBaseModelTask3(unittest.TestCase):
@@ -50,6 +51,10 @@ class TestBaseModelTask3(unittest.TestCase):
 
     def setUp(self):
         """setUp all instance we need"""
+        try:
+            os.rename("file.json", "tmp.json")
+        except IOError:
+            pass
         self.my_model1 = BaseModel()
         self.my_model2 = BaseModel()
         self.my_model1.name = "My_First_Model"
@@ -58,6 +63,14 @@ class TestBaseModelTask3(unittest.TestCase):
 
     def tearDown(self):
         """tearDown delete all instance"""
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp.json", "file.json")
+        except IOError:
+            pass
         del self.my_model1
         del self.my_model2
         del self.my_model_json
@@ -70,17 +83,22 @@ class TestBaseModelTask3(unittest.TestCase):
 
     def test_DateTimeCreated(self):
         self.assertEqual(self.my_model1.created_at, self.my_model1.updated_at)
-        self.assertNotEqual(self.my_model1.created_at, self.my_model2.created_at)
-        self.assertNotEqual(self.my_model1.updated_at, self.my_model2.updated_at)
+        self.assertNotEqual(self.my_model1.created_at,
+                            self.my_model2.created_at)
+        self.assertNotEqual(self.my_model1.updated_at,
+                            self.my_model2.updated_at)
         self.my_model2.save()
-        self.assertNotEqual(self.my_model2.created_at, self.my_model2.updated_at)
+        self.assertNotEqual(self.my_model2.created_at,
+                            self.my_model2.updated_at)
 
     def test_strRepr(self):
         strRep = self.my_model1.__str__()
         self.assertIn(f"[BaseModel] ({self.my_model1.id})", strRep)
         self.assertIn(f"'id': '{self.my_model1.id}'", strRep)
-        self.assertIn(f"'created_at': {repr(self.my_model1.created_at)}", strRep)
-        self.assertIn(f"'updated_at': {repr(self.my_model1.updated_at)}", strRep)
+        self.assertIn(
+            f"'created_at': {repr(self.my_model1.created_at)}", strRep)
+        self.assertIn(
+            f"'updated_at': {repr(self.my_model1.updated_at)}", strRep)
 
     def test_ToDictContainsAddedAttributes(self):
         self.assertIn("name", self.my_model_json)
@@ -93,7 +111,6 @@ class TestBaseConstructor(unittest.TestCase):
     """
 
     def setUp(self):
-        """setUp all instance we need"""
         self.my_model = BaseModel()
         self.my_model.name = "My_First_Model"
         self.my_model.my_number = 89
@@ -126,9 +143,49 @@ class TestBaseConstructor(unittest.TestCase):
         """test all not equal cases"""
         self.assertNotEqual(self.my_new_model_other, self.my_new_model)
         self.assertNotEqual(self.my_new_model.id, self.other_model.id)
-        self.assertNotEqual(self.my_new_model.__str__(), self.other_model.__str__())
+        self.assertNotEqual(self.my_new_model.__str__(),
+                            self.other_model.__str__())
 
     def test_base_false(self):
         """test all false cases"""
         self.assertFalse(self.my_model is self.my_new_model)
         self.assertFalse(self.other_model is self.my_new_model)
+
+
+class TestSaveBaseModel(unittest.TestCase):
+    """
+    Test save fonction
+    """
+
+    def setUp(self):
+        """
+        setUp all instance we need
+        """
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+        self.myUniqueModel = BaseModel()
+
+    def tearDown(self):
+        """
+        tearDown delete all instance
+        """
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+        del self.myUniqueModel
+
+    def test_save(self):
+        """
+        Test save function
+        """
+        self.myUniqueModel.save()
+        with open("file.json", "r") as f:
+            buf = f.read()
+            self.assertIn("BaseModel.", buf)
