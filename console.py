@@ -264,38 +264,3 @@ Usage: update <class name> <id> <attribute name> "<attribute value>"\n'
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
-
-"""
-line = <className > .update( < id > , < attribute > , < value > )
-
-command < className > <id > <attribute > <value >
-
-line.split(".")
-[ < className > , update( < id > , < attribute > , < value > )]
-
-
-for i in range(len(args[1]))
-  beforePar = 0
-   if args[1][i] == "(":
-        beforePar = 1
-    if beforePar == 0:
-        command += args[1][i]
-    else:
-        argument += args[1][i+1:-1]
-        break
-    argument = argument.replace(",", "")
-
-
-update = command = do_command = > dict {"update": self.do_update}
-<className > = args[0]
-arguement = "<id> <attribute> <value>"
-
-do_command(f{args[0]} {arguement})
-
-
-
-
-update <className> <id> <attrbite> <value> 
-update <className> <id> {id: 19328743, bite: 2929382874892cm} 
-"""
