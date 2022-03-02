@@ -23,6 +23,16 @@ class HBNBCommand(cmd.Cmd):
                "City", "Amenity", "Place", "Review"}
 
     def default(self, line):
+        """
+        Default section, all the command not built-in gonna be procces here
+        Process all the command line as : ClassName.function, where function is:
+            all()
+            show()
+            destroy()
+            count()
+        Exceptions:
+            If the syntaxe is not know
+        """
         functionDict = {"all": self.do_all,
                         "show": self.do_show, "destroy": self.do_destroy, "count": self.do_count}
         args = line.split(".")
@@ -66,6 +76,9 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_count(self, line):
+        """
+        Count the number of given ClassName instance
+        """
         count = 0
         for instance in models.storage.all().values():
             if instance.__class__.__name__ == line:
