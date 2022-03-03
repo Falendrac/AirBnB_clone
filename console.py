@@ -3,6 +3,8 @@
 Creation of the console of the web application
 """
 
+import re
+import shlex
 import cmd
 from models.base_model import BaseModel
 from models.user import User
@@ -35,28 +37,12 @@ class HBNBCommand(cmd.Cmd):
         """
         functionDict = {"all": self.do_all,
                         "show": self.do_show, "destroy": self.do_destroy, "count": self.do_count}
-        args = line.split(".")
-        command = ""
-        arguments = ""
-        beforeParentheses = 1
-        if len(args) == 1:
-            print(f"*** Unknown syntax: {line}")
-            return False
-        for i in range(len(args[1])):
-            if args[1][i] == "(":
-                beforeParentheses = 0
-            if beforeParentheses:
-                command += args[1][i]
-            else:
-                arguments = args[1][i+1:-1]
-                break
-        if command in functionDict:
-            arguments = arguments.replace(",", "")
-            arguments = arguments.replace('"', '')
-            if not arguments:
-                functionDict[command](str(args[0]))
-            else:
-                functionDict[command](str(args[0] + " " + arguments))
+        patern = r"(.*)\.(.*)\((.*)\)"
+        if re.search(patern, line):
+            args = re.sub(patern, r"\2 \1 \3", line)
+            args = shlex.split(args)
+            if args[0] in functionDict:
+                functionDict[args[0]](' '.join(args[1:]))
         else:
             print(f"*** Unknown syntax: {line}")
 
