@@ -3,6 +3,8 @@
 Creation of the console of the web application
 """
 
+import re
+import shlex
 import cmd
 from models.base_model import BaseModel
 from models.user import User
@@ -25,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """
         Default section, all the command not built-in gonna be procces here
-        Process all the command line as : ClassName.function, where function is:
+        Process all the command line as: ClassName.function, where function is:
             all()
             show()
             destroy()
@@ -34,29 +36,17 @@ class HBNBCommand(cmd.Cmd):
             If the syntaxe is not know
         """
         functionDict = {"all": self.do_all,
-                        "show": self.do_show, "destroy": self.do_destroy, "count": self.do_count}
-        args = line.split(".")
-        command = ""
-        arguments = ""
-        beforeParentheses = 1
-        if len(args) == 1:
-            print(f"*** Unknown syntax: {line}")
-            return False
-        for i in range(len(args[1])):
-            if args[1][i] == "(":
-                beforeParentheses = 0
-            if beforeParentheses:
-                command += args[1][i]
-            else:
-                arguments = args[1][i+1:-1]
-                break
-        if command in functionDict:
-            arguments = arguments.replace(",", "")
-            arguments = arguments.replace('"', '')
-            if not arguments:
-                functionDict[command](str(args[0]))
-            else:
-                functionDict[command](str(args[0] + " " + arguments))
+                        "show": self.do_show,
+                        "destroy": self.do_destroy,
+                        "count": self.do_count,
+                        "update": self.do_update
+                        }
+        patern = r"(.*)\.(.*)\((.*)\)"
+        if re.search(patern, line):
+            args = re.sub(patern, r"\2 \1 \3", line)
+            args = shlex.split(args)
+            if args[0] in functionDict:
+                functionDict[args[0]](' '.join(args[1:]))
         else:
             print(f"*** Unknown syntax: {line}")
 
@@ -191,6 +181,22 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
+        if '{' in line:
+            data_dict = line.split("{")
+            data_dict[1] = data_dict[1][:-1]
+            args = data_dict[1].split(" ")
+            if (len(args) % 2 == 0):
+                for i in range(0, len(args), 2):
+                    if args[i][-1] == ':':
+                        args[i] = args[i][:-1]
+                    if args[i + 1][-1] == ',':
+                        args[i + 1] = args[i + 1][:-1]
+                    new_line = data_dict[0].replace(',', '') +\
+                        args[i] + ' ' + args[i + 1]
+                    self.do_update(new_line)
+            else:
+                print("** value missing **")
+            return
         data = line.split(" ")
         if data[0] not in self.classes:
             print("** class doesn't exist **")
@@ -209,7 +215,8 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return False
         currentInstance = models.storage.all()[strLine]
-        if data[2] != "id" or data[2] != "created_at" or data[2] != "updated_at":
+        if data[2] != "id" or data[2] != "created_at"\
+                or data[2] != "updated_at":
             setattr(currentInstance, data[2], data[3])
         models.storage.save()
 
@@ -217,7 +224,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Help section of EOF
         """
-        print('Manage the EOF, exit the console and save all the created instance\n')
+        print('Manage the EOF, exit the console \
+        and save all the created instance\n')
 
     def help_quit(self):
         """

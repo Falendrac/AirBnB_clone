@@ -51,12 +51,13 @@ class FileStorage:
 
     def reload(self):
         """
-        Read the saved json file, and realod the content into the __object attribute
+        Read the saved json file,
+        and realod the content into the __object attribute
         """
         try:
             with open(self.__file_path, "r+") as file:
                 dictJson = json.load(file)
                 for key, value in dictJson.items():
                     self.__objects[key] = eval(value['__class__'])(**value)
-        except:
+        except self.__file_path.ReloadFailed:
             pass
