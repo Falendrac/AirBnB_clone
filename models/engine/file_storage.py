@@ -1,12 +1,18 @@
 #!/usr/bin/python3
 
-import json
-from models.base_model import BaseModel
-from models.user import User
-
 """
 Create a file storage class, to store all our data
 """
+
+import json
+from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 
 class FileStorage:
@@ -14,15 +20,8 @@ class FileStorage:
     Class of our data storage
     """
 
-    def __init__(self):
-        """"
-        Init the class.
-        Var:
-            __file_path (str): The path of our json file that cointain data
-            __objects (dict): Contains all of our instance, as <class name>.id
-        """
-        self.__file_path = 'file.json'
-        self.__objects = {}
+    __file_path = 'file.json'
+    __objects = {}
 
     def all(self):
         """
@@ -51,12 +50,13 @@ class FileStorage:
 
     def reload(self):
         """
-        Read the saved json file, and realod the content into the __object attribute
+        Read the saved json file, and realod the content into the
+        __object attribute
         """
         try:
             with open(self.__file_path, "r+") as file:
                 dictJson = json.load(file)
                 for key, value in dictJson.items():
                     self.__objects[key] = eval(value['__class__'])(**value)
-        except:
+        except FileExistsError:
             pass
