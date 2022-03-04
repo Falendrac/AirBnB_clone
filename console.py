@@ -3,6 +3,7 @@
 Creation of the console of the web application
 """
 
+import json
 import re
 import shlex
 import cmd
@@ -46,7 +47,10 @@ class HBNBCommand(cmd.Cmd):
             args = re.sub(patern, r"\2 \1 \3", line)
             args = shlex.split(args)
             if args[0] in functionDict:
-                functionDict[args[0]](' '.join(args[1:]))
+                if args[0] == "update":
+                    self.update_in_dict(args[1], line)
+                else:
+                    functionDict[args[0]](' '.join(args[1:]))
         else:
             print(f"*** Unknown syntax: {line}")
 
@@ -165,6 +169,31 @@ class HBNBCommand(cmd.Cmd):
                     instanceListStr.append(instance.__str__())
         print(instanceListStr)
 
+    def update_in_dict(self, classname, line):
+        """
+        Convert argument passes in command in dictionnary
+        for the command update and call the function do_update with all key
+        """
+        dictRepr = re.findall("({.*})", line)
+        dictRepr[0] = dictRepr[0].replace('\'', "\"")
+        args = json.loads(dictRepr[0])
+        line_catch = re.findall("(\".*?\")", line)
+        id_line = line_catch[0].replace("\"", "")
+        for key, val in args.items():
+            self.do_update(
+                classname + " " + id_line + " " + key + " " + str(val)
+            )
+
+    def is_float(self, num):
+        """
+        Check if the string is a number
+        """
+        try:
+            float(num)
+            return True
+        except ValueError:
+            return False
+
     def do_update(self, line):
         """
         Update an attribute of an instance.
@@ -181,22 +210,6 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        if '{' in line:
-            data_dict = line.split("{")
-            data_dict[1] = data_dict[1][:-1]
-            args = data_dict[1].split(" ")
-            if (len(args) % 2 == 0):
-                for i in range(0, len(args), 2):
-                    if args[i][-1] == ':':
-                        args[i] = args[i][:-1]
-                    if args[i + 1][-1] == ',':
-                        args[i + 1] = args[i + 1][:-1]
-                    new_line = data_dict[0].replace(',', '') +\
-                        args[i] + ' ' + args[i + 1]
-                    self.do_update(new_line)
-            else:
-                print("** value missing **")
-            return
         data = line.split(" ")
         if data[0] not in self.classes:
             print("** class doesn't exist **")
@@ -217,6 +230,10 @@ class HBNBCommand(cmd.Cmd):
         currentInstance = models.storage.all()[strLine]
         if data[2] != "id" or data[2] != "created_at"\
                 or data[2] != "updated_at":
+            if data[3].isnumeric():
+                data[3] = int(data[3])
+            elif self.is_float(data[3]):
+                data[3] = float(data[3])
             setattr(currentInstance, data[2], data[3])
         models.storage.save()
 
