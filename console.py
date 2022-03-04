@@ -25,7 +25,8 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """
         Default section, all the command not built-in gonna be procces here
-        Process all the command line as : ClassName.function, where function is:
+        Process all the command line as : ClassName.function,
+        where function is:
             all()
             show()
             destroy()
@@ -34,7 +35,9 @@ class HBNBCommand(cmd.Cmd):
             If the syntaxe is not know
         """
         functionDict = {"all": self.do_all,
-                        "show": self.do_show, "destroy": self.do_destroy, "count": self.do_count}
+                        "show": self.do_show,
+                        "destroy": self.do_destroy,
+                        "count": self.do_count}
         args = line.split(".")
         command = ""
         arguments = ""
@@ -61,6 +64,9 @@ class HBNBCommand(cmd.Cmd):
             print(f"*** Unknown syntax: {line}")
 
     def emptyline(self):
+        """
+        The case of empty line
+        """
         print(end="")
 
     def do_EOF(self, line):
@@ -95,6 +101,7 @@ class HBNBCommand(cmd.Cmd):
         """
         if not className:
             print("** class name missing **")
+            return False
         try:
             newClass = eval(className)()
             print(newClass.id)
@@ -209,7 +216,8 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return False
         currentInstance = models.storage.all()[strLine]
-        if data[2] != "id" or data[2] != "created_at" or data[2] != "updated_at":
+        if data[2] != "id" or data[2] != "created_at"\
+                or data[2] != "updated_at":
             setattr(currentInstance, data[2], data[3])
         models.storage.save()
 
@@ -217,7 +225,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Help section of EOF
         """
-        print('Manage the EOF, exit the console and save all the created instance\n')
+        print('Manage the EOF, exit the console and\
+save all the created instance\n')
 
     def help_quit(self):
         """
