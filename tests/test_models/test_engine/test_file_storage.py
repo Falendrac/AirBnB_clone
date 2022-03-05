@@ -175,4 +175,3 @@ class TestEngineFileStorage(unittest.TestCase):
             models.storage.all("Coucou")
         with self.assertRaises(TypeError):
             models.storage.reload("Coucou")
-        sys.stderr.write("FAIL")
