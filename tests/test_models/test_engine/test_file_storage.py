@@ -174,9 +174,3 @@ class TestEngineFileStorage(unittest.TestCase):
             models.storage.all("Coucou")
         with self.assertRaises(TypeError):
             models.storage.reload("Coucou")
-
-    def test_reload_no_file(self):
-        """
-        Raise an error if not raload file
-        """
-        self.assertRaises(FileNotFoundError, models.storage.reload())
