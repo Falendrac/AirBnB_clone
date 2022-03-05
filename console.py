@@ -217,6 +217,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
+        line = line.replace(",", "")
         data = line.split(" ")
         if data[0] not in self.classes:
             print("** class doesn't exist **")
@@ -235,7 +236,6 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return False
         currentInstance = models.storage.all()[strLine]
-        print(len(data[2]))
         if data[2] == "id" or data[2] == "created_at" or\
                 data[2] == "updated_at":
             return False
