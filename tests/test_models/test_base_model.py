@@ -76,12 +76,15 @@ class TestBaseModelTask3(unittest.TestCase):
         del self.my_model_json
 
     def test_idStr(self):
+        """test type of id"""
         self.assertEqual(type(self.my_model1.id), str)
 
     def test_uniqueId(self):
+        """test if id is unique"""
         self.assertNotEqual(self.my_model1.id, self.my_model2.id)
 
     def test_DateTimeCreated(self):
+        """test the date time"""
         self.assertEqual(self.my_model1.created_at, self.my_model1.updated_at)
         self.assertNotEqual(self.my_model1.created_at,
                             self.my_model2.created_at)
@@ -92,6 +95,7 @@ class TestBaseModelTask3(unittest.TestCase):
                             self.my_model2.updated_at)
 
     def test_strRepr(self):
+        """test the repr of class"""
         strRep = self.my_model1.__str__()
         self.assertIn(f"[BaseModel] ({self.my_model1.id})", strRep)
         self.assertIn(f"'id': '{self.my_model1.id}'", strRep)

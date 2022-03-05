@@ -76,12 +76,15 @@ class TestUser(unittest.TestCase):
         del self.my_model_json
 
     def test_idStr(self):
+        """test if id is str"""
         self.assertEqual(type(self.my_model1.id), str)
 
     def test_uniqueId(self):
+        """test if id is unique"""
         self.assertNotEqual(self.my_model1.id, self.my_model2.id)
 
     def test_DateTimeCreated(self):
+        """test if datetime is created"""
         self.assertEqual(self.my_model1.created_at, self.my_model1.updated_at)
         self.assertNotEqual(self.my_model1.created_at,
                             self.my_model2.created_at)
@@ -92,6 +95,7 @@ class TestUser(unittest.TestCase):
                             self.my_model2.updated_at)
 
     def test_strRepr(self):
+        """test the repr of class"""
         strRep = self.my_model1.__str__()
         self.assertIn(f"[User] ({self.my_model1.id})", strRep)
         self.assertIn(f"'id': '{self.my_model1.id}'", strRep)
@@ -101,34 +105,40 @@ class TestUser(unittest.TestCase):
             f"'updated_at': {repr(self.my_model1.updated_at)}", strRep)
 
     def test_ToDictContainsAddedAttributes(self):
+        """test dict attribute"""
         self.assertIn("name", self.my_model_json)
         self.assertIn("my_number", self.my_model_json)
 
     def test_attribute_exist(self):
+        """test attribute existence"""
         self.assertTrue("email" in dir(self.my_model1))
         self.assertTrue("password" in dir(self.my_model1))
         self.assertTrue("first_name" in dir(self.my_model1))
         self.assertTrue("last_name" in dir(self.my_model1))
 
     def test_attribute_type(self):
+        """test the attribute type"""
         self.assertTrue(type(self.my_model1.email) is str)
         self.assertTrue(type(self.my_model1.password) is str)
         self.assertTrue(type(self.my_model1.first_name) is str)
         self.assertTrue(type(self.my_model1.last_name) is str)
 
     def test_attribute_empty(self):
+        """test if attribute is empty"""
         self.assertTrue(self.my_model1.email == "")
         self.assertTrue(self.my_model1.password == "")
         self.assertTrue(self.my_model1.first_name == "")
         self.assertTrue(self.my_model1.last_name == "")
 
     def test_attribute_change(self):
+        """test if attribute change"""
         self.my_model1.first_name = 48
 
         self.assertTrue(type(self.my_model1.first_name) is not str)
         self.assertTrue(self.my_model1.first_name == 48)
 
     def test_serialization(self):
+        """test serialization"""
         self.assertEqual(
             str(self.my_model1), f"[User] ({self.my_model1.id}) {self.my_model1.__dict__}")
         dictJson = self.my_model1.__dict__.copy()

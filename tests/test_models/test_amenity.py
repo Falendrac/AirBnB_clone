@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+"""
+Unitest for the base model class
+"""
+
+
 import unittest
 import pycodestyle
 import time
@@ -6,10 +11,6 @@ from datetime import datetime
 from models import amenity
 from models.amenity import Amenity
 import os
-
-"""
-Unitest for the base model class
-"""
 
 
 class TestAmenity(unittest.TestCase):
@@ -76,12 +77,15 @@ class TestAmenity(unittest.TestCase):
         del self.my_model_json
 
     def test_idStr(self):
+        """test if id is a string"""
         self.assertEqual(type(self.my_model1.id), str)
 
     def test_uniqueId(self):
+        """test if id is unique"""
         self.assertNotEqual(self.my_model1.id, self.my_model2.id)
 
     def test_DateTimeCreated(self):
+        """test if date is created"""
         self.assertEqual(self.my_model1.created_at, self.my_model1.updated_at)
         self.assertNotEqual(self.my_model1.created_at,
                             self.my_model2.created_at)
@@ -92,6 +96,7 @@ class TestAmenity(unittest.TestCase):
                             self.my_model2.updated_at)
 
     def test_strRepr(self):
+        """test if is good repr of class"""
         strRep = self.my_model1.__str__()
         self.assertIn(f"[Amenity] ({self.my_model1.id})", strRep)
         self.assertIn(f"'id': '{self.my_model1.id}'", strRep)
@@ -101,25 +106,31 @@ class TestAmenity(unittest.TestCase):
             f"'updated_at': {repr(self.my_model1.updated_at)}", strRep)
 
     def test_ToDictContainsAddedAttributes(self):
+        """test dict"""
         self.assertIn("name", self.my_model_json)
         self.assertIn("my_number", self.my_model_json)
 
     def test_attribute_exist(self):
+        """test attribute"""
         self.assertTrue("name" in dir(self.my_model2))
 
     def test_attribute_type(self):
+        """test attribute type"""
         self.assertTrue(type(self.my_model2.name) is str)
 
     def test_attribute_empty(self):
+        """test if attribute is empty"""
         self.assertTrue(self.my_model2.name == "")
 
     def test_attribute_change(self):
+        """test attribute change"""
         self.my_model2.name = 48
 
         self.assertTrue(type(self.my_model2.name) is not str)
         self.assertTrue(self.my_model2.name == 48)
 
     def test_serialization(self):
+        """test serialization"""
         self.assertEqual(
             str(self.my_model1), f"[Amenity] ({self.my_model1.id}) {self.my_model1.__dict__}")
         dictJson = self.my_model1.__dict__.copy()
