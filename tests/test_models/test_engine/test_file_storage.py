@@ -18,6 +18,7 @@ from models.state import State
 from models.engine.file_storage import FileStorage
 from models.engine import file_storage
 import models
+import sys
 
 
 class EngineStorageDocTest(unittest.TestCase):
@@ -174,3 +175,4 @@ class TestEngineFileStorage(unittest.TestCase):
             models.storage.all("Coucou")
         with self.assertRaises(TypeError):
             models.storage.reload("Coucou")
+        sys.stderr.write("FAIL")
