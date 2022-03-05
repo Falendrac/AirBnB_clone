@@ -3,6 +3,8 @@
 Creation of the console of the web application
 """
 
+import re
+import shlex
 import cmd
 from models.base_model import BaseModel
 from models.user import User
@@ -85,9 +87,10 @@ class HBNBCommand(cmd.Cmd):
         """
         Count the number of given ClassName instance
         """
+        args = shlex.split(line)
         count = 0
         for instance in models.storage.all().values():
-            if instance.__class__.__name__ == line:
+            if instance.__class__.__name__ == args[0]:
                 count += 1
         print(count)
 
@@ -102,8 +105,9 @@ class HBNBCommand(cmd.Cmd):
         if not className:
             print("** class name missing **")
             return False
+        data = shlex.split(className)
         try:
-            newClass = eval(className)()
+            newClass = eval(data[0])()
             print(newClass.id)
             newClass.save()
         except NameError:
@@ -122,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        data = line.split(" ")
+        data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
@@ -148,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        data = line.split(" ")
+        data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
