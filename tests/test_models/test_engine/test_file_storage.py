@@ -92,7 +92,8 @@ class TestEngineFileStorage(unittest.TestCase):
 
     def test_createNewInstance(self):
         """
-        Check the creation of news instances, check if there are well implemented
+        Check the creation of news instances, check if there are well
+        implemented
         into the storage dict
         """
         newBaseModel = BaseModel()
@@ -113,7 +114,8 @@ class TestEngineFileStorage(unittest.TestCase):
 
     def test_checkSave(self):
         """
-        Check the creation of news instances, check if there are well implemented
+        Check the creation of news instances, check if there are well
+        implemented
         into the json file
         """
         newBaseModel = BaseModel()
@@ -137,7 +139,8 @@ class TestEngineFileStorage(unittest.TestCase):
 
     def test_checkRelaod(self):
         """
-        Check the creation of news instances, check if there are well implemented
+        Check the creation of news instances, check if there are well
+        implemented
         with the realod method
         """
         newBaseModel = BaseModel()
