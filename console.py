@@ -235,14 +235,16 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return False
         currentInstance = models.storage.all()[strLine]
-        if data[2] != "id" or data[2] != "created_at"\
-                or data[2] != "updated_at":
-            if data[3].isnumeric():
-                data[3] = int(data[3])
-            elif self.is_float(data[3]):
-                data[3] = float(data[3])
-            data[3] = data[3].replace("\"", "")
-            setattr(currentInstance, data[2], data[3])
+        print(len(data[2]))
+        if data[2] == "id" or data[2] == "created_at" or\
+                data[2] == "updated_at":
+            return False
+        if data[3].isnumeric():
+            data[3] = int(data[3])
+        elif self.is_float(data[3]):
+            data[3] = float(data[3])
+        data[3] = data[3].replace("\"", "")
+        setattr(currentInstance, data[2], data[3])
         models.storage.save()
 
     def help_EOF(self):
