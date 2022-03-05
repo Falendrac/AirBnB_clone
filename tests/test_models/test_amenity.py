@@ -83,17 +83,22 @@ class TestAmenity(unittest.TestCase):
 
     def test_DateTimeCreated(self):
         self.assertEqual(self.my_model1.created_at, self.my_model1.updated_at)
-        self.assertNotEqual(self.my_model1.created_at, self.my_model2.created_at)
-        self.assertNotEqual(self.my_model1.updated_at, self.my_model2.updated_at)
+        self.assertNotEqual(self.my_model1.created_at,
+                            self.my_model2.created_at)
+        self.assertNotEqual(self.my_model1.updated_at,
+                            self.my_model2.updated_at)
         self.my_model2.save()
-        self.assertNotEqual(self.my_model2.created_at, self.my_model2.updated_at)
+        self.assertNotEqual(self.my_model2.created_at,
+                            self.my_model2.updated_at)
 
     def test_strRepr(self):
         strRep = self.my_model1.__str__()
         self.assertIn(f"[Amenity] ({self.my_model1.id})", strRep)
         self.assertIn(f"'id': '{self.my_model1.id}'", strRep)
-        self.assertIn(f"'created_at': {repr(self.my_model1.created_at)}", strRep)
-        self.assertIn(f"'updated_at': {repr(self.my_model1.updated_at)}", strRep)
+        self.assertIn(
+            f"'created_at': {repr(self.my_model1.created_at)}", strRep)
+        self.assertIn(
+            f"'updated_at': {repr(self.my_model1.updated_at)}", strRep)
 
     def test_ToDictContainsAddedAttributes(self):
         self.assertIn("name", self.my_model_json)
@@ -115,12 +120,14 @@ class TestAmenity(unittest.TestCase):
         self.assertTrue(self.my_model2.name == 48)
 
     def test_serialization(self):
-        self.assertEqual(str(self.my_model1), f"[Amenity] ({self.my_model1.id}) {self.my_model1.__dict__}")
+        self.assertEqual(
+            str(self.my_model1), f"[Amenity] ({self.my_model1.id}) {self.my_model1.__dict__}")
         dictJson = self.my_model1.__dict__.copy()
         dictJson["__class__"] = self.my_model1.__class__.__name__
         dictJson["created_at"] = dictJson["created_at"].isoformat()
         dictJson["updated_at"] = dictJson["updated_at"].isoformat()
         self.assertEqual(self.my_model1.to_dict(), dictJson)
+
 
 class TestAmenityConstructor(unittest.TestCase):
     """
@@ -173,7 +180,8 @@ class TestAmenityConstructor(unittest.TestCase):
         """test all not equal cases"""
         self.assertNotEqual(self.my_new_model_other, self.my_new_model)
         self.assertNotEqual(self.my_new_model.id, self.other_model.id)
-        self.assertNotEqual(self.my_new_model.__str__(), self.other_model.__str__())
+        self.assertNotEqual(self.my_new_model.__str__(),
+                            self.other_model.__str__())
 
     def test_base_false(self):
         """test all false cases"""

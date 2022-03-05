@@ -3,6 +3,7 @@
 Creation of the console of the web application
 """
 
+
 import json
 import re
 import shlex
@@ -47,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
             args = re.sub(patern, r"\2 \1 \3", line)
             args = shlex.split(args)
             if args[0] in functionDict:
-                if args[0] == "update":
+                if args[0] == "update" and "{" in line and "}" in line:
                     self.update_in_dict(args[1], line)
                 else:
                     functionDict[args[0]](' '.join(args[1:]))
@@ -55,6 +56,9 @@ class HBNBCommand(cmd.Cmd):
             print(f"*** Unknown syntax: {line}")
 
     def emptyline(self):
+        """
+        The case of empty line
+        """
         print(end="")
 
     def do_EOF(self, line):
@@ -73,9 +77,10 @@ class HBNBCommand(cmd.Cmd):
         """
         Count the number of given ClassName instance
         """
+        args = shlex.split(line)
         count = 0
         for instance in models.storage.all().values():
-            if instance.__class__.__name__ == line:
+            if instance.__class__.__name__ == args[0]:
                 count += 1
         print(count)
 
@@ -89,8 +94,10 @@ class HBNBCommand(cmd.Cmd):
         """
         if not className:
             print("** class name missing **")
+            return False
+        data = shlex.split(className)
         try:
-            newClass = eval(className)()
+            newClass = eval(data[0])()
             print(newClass.id)
             newClass.save()
         except NameError:
@@ -109,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        data = line.split(" ")
+        data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
@@ -135,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        data = line.split(" ")
+        data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
@@ -210,7 +217,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        data = line.split(" ")
+        data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
@@ -228,21 +235,22 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return False
         currentInstance = models.storage.all()[strLine]
-        if data[2] != "id" or data[2] != "created_at"\
-                or data[2] != "updated_at":
-            if data[3].isnumeric():
-                data[3] = int(data[3])
-            elif self.is_float(data[3]):
-                data[3] = float(data[3])
-            setattr(currentInstance, data[2], data[3])
+        if data[2] == "id" or data[2] == "created_at" or\
+                data[2] == "updated_at":
+            return False
+        if data[3].isnumeric():
+            data[3] = int(data[3])
+        elif self.is_float(data[3]):
+            data[3] = float(data[3])
+        setattr(currentInstance, data[2], data[3])
         models.storage.save()
 
     def help_EOF(self):
         """
         Help section of EOF
         """
-        print('Manage the EOF, exit the console \
-        and save all the created instance\n')
+        print('Manage the EOF, exit the console and\
+save all the created instance\n')
 
     def help_quit(self):
         """
@@ -298,6 +306,13 @@ Usage: all <className>\n\
             'Update an attribute of an instance.\n\
 Usage: update <class name> <id> <attribute name> "<attribute value>"\n'
         )
+
+    def help_count(self):
+        """
+        Help section of count
+        """
+        print('Count the number of given ClassName instance\n\
+Usage : count <class name>')
 
 
 if __name__ == '__main__':
