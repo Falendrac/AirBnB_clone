@@ -3,6 +3,7 @@
 Creation of the console of the web application
 """
 
+
 import json
 import re
 import shlex
@@ -42,19 +43,37 @@ class HBNBCommand(cmd.Cmd):
                         "count": self.do_count,
                         "update": self.do_update
                         }
-        patern = r"(.*)\.(.*)\((.*)\)"
-        if re.search(patern, line):
-            args = re.sub(patern, r"\2 \1 \3", line)
-            args = shlex.split(args)
-            if args[0] in functionDict:
-                if args[0] == "update":
-                    self.update_in_dict(args[1], line)
-                else:
-                    functionDict[args[0]](' '.join(args[1:]))
+        args = line.split(".")
+        command = ""
+        arguments = ""
+        beforeParentheses = 1
+        if len(args) == 1:
+            print(f"*** Unknown syntax: {line}")
+            return False
+        for i in range(len(args[1])):
+            if args[1][i] == "(":
+                beforeParentheses = 0
+            if beforeParentheses:
+                command += args[1][i]
+            else:
+                arguments = args[1][i+1:-1]
+                break
+        if command in functionDict:
+            arguments = arguments.replace(",", "")
+            arguments = arguments.replace('"', '')
+            if args[0] == "update":
+                self.update_in_dict(args[1], line)
+            elif not arguments:
+                functionDict[command](str(args[0]))
+            else:
+                functionDict[command](str(args[0] + " " + arguments))
         else:
             print(f"*** Unknown syntax: {line}")
 
     def emptyline(self):
+        """
+        The case of empty line
+        """
         print(end="")
 
     def do_EOF(self, line):
@@ -73,9 +92,10 @@ class HBNBCommand(cmd.Cmd):
         """
         Count the number of given ClassName instance
         """
+        args = shlex.split(line)
         count = 0
         for instance in models.storage.all().values():
-            if instance.__class__.__name__ == line:
+            if instance.__class__.__name__ == args[0]:
                 count += 1
         print(count)
 
@@ -89,8 +109,10 @@ class HBNBCommand(cmd.Cmd):
         """
         if not className:
             print("** class name missing **")
+            return False
+        data = shlex.split(className)
         try:
-            newClass = eval(className)()
+            newClass = eval(data[0])()
             print(newClass.id)
             newClass.save()
         except NameError:
@@ -109,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        data = line.split(" ")
+        data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
@@ -135,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        data = line.split(" ")
+        data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
@@ -241,8 +263,9 @@ class HBNBCommand(cmd.Cmd):
         """
         Help section of EOF
         """
-        print('Manage the EOF, exit the console \
-        and save all the created instance\n')
+        print('Manage the EOF, exit the console and\
+save all the created instance\n')
+
 
     def help_quit(self):
         """
@@ -298,6 +321,13 @@ Usage: all <className>\n\
             'Update an attribute of an instance.\n\
 Usage: update <class name> <id> <attribute name> "<attribute value>"\n'
         )
+
+    def help_count(self):
+        """
+        Help section of count
+        """
+        print('Count the number of given ClassName instance\n\
+Usage : count <class name>')
 
 
 if __name__ == '__main__':
