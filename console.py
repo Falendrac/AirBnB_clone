@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
             args = re.sub(patern, r"\2 \1 \3", line)
             args = shlex.split(args)
             if args[0] in functionDict:
-                if args[0] == "update":
+                if args[0] == "update" and "{" in line and "}" in line:
                     self.update_in_dict(args[1], line)
                 else:
                     functionDict[args[0]](' '.join(args[1:]))
