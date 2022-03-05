@@ -174,7 +174,3 @@ class TestEngineFileStorage(unittest.TestCase):
             models.storage.all("Coucou")
         with self.assertRaises(TypeError):
             models.storage.reload("Coucou")
-
-
-if __name__ == '__main__':
-    unittest.main
