@@ -217,6 +217,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing **")
             return False
+        line = line.replace(",", "")
         data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
