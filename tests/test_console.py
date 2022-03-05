@@ -3,6 +3,7 @@
 Test for the console.py
 """
 
+from itertools import count
 import os
 import unittest
 import models
@@ -13,6 +14,13 @@ from console import HBNBCommand
 import console
 import pycodestyle
 from unittest.mock import patch
+from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.state import State
 from models.engine.file_storage import FileStorage
 
 
@@ -39,7 +47,7 @@ class TestBasicCaseAndDoc(unittest.TestCase):
         module_class = len(HBNBCommand.do_create.__doc__)
         self.assertGreater(module_class, 0)
 
-        module_class = len(HBNBCommand.do_show.__doc__)
+        module_class = len(HBNBCommand.do_destroy.__doc__)
         self.assertGreater(module_class, 0)
 
         module_class = len(HBNBCommand.do_quit.__doc__)
@@ -224,6 +232,156 @@ class TestFunctions(unittest.TestCase):
             pass
         FileStorage._FileStorage__objects = {}
 
+    def test_all(self):
+        """
+        Check the all functions
+        Check first all the edges cases, then the creation of
+        instances 
+        """
+        output = "** class doesn't exist **"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all NotAClass")
+            self.assertEqual(output, f.getvalue().strip())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all")
+            bufInstance = f.getvalue().strip()
+        allClasses = ["BaseModel",
+                      "Amenity",
+                      "Place",
+                      "City",
+                      "Review",
+                      "State",
+                      "User"]
+        for className in allClasses:
+            self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all BaseModel")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "BaseModel":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all Amenity")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "Amenity":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all City")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "City":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all Place")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "Place":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all Review")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "Review":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all State")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "State":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all User")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "User":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.all()")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "User":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.all()")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "BaseModel":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.all()")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "Amenity":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.all()")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "City":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.all()")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "Place":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.all()")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "Review":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.all()")
+            bufInstance = f.getvalue().strip()
+        for className in allClasses:
+            if className != "State":
+                self.assertNotIn(className, bufInstance)
+            else:
+                self.assertIn(className, bufInstance)
+
     def test_create(self):
         """
         Check the create functions
@@ -276,7 +434,7 @@ class TestFunctions(unittest.TestCase):
 
     def test_show(self):
         """
-        Check the create functions
+        Check the show functions
         Check first all the edges cases, then the creation of
         instances
         """
@@ -397,3 +555,167 @@ class TestFunctions(unittest.TestCase):
             HBNBCommand().onecmd(f"State.      show(     {id}     )")
             className = f"[State] ({id})"
             self.assertIn(className, f.getvalue().strip())
+
+    def test_destroy(self):
+        """
+        Test the destroy function
+        """
+        output = "** class name missing **"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy")
+            self.assertEqual(output, f.getvalue().strip())
+        output = "** class doesn't exist **"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy NotGoodClasses")
+            self.assertEqual(output, f.getvalue().strip())
+        output = "** instance id missing **"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy BaseModel")
+            self.assertEqual(output, f.getvalue().strip())
+        output = "** no instance found **"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy BaseModel NotGoodID")
+            self.assertEqual(output, f.getvalue().strip())
+        output = "** class doesn't exist **"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("NotGoodClasses.destroy()")
+            self.assertEqual(output, f.getvalue().strip())
+        output = "** instance id missing **"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.destroy()")
+            self.assertEqual(output, f.getvalue().strip())
+        output = "** no instance found **"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.destroy(NotGoodID)")
+            self.assertEqual(output, f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy BaseModel " + id)
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy Amenity " + id)
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy City " + id)
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy Place " + id)
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy Review " + id)
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy State " + id)
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy User " + id)
+            self.assertEqual(models.storage.all(), {})
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"BaseModel.destroy({id})")
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"Amenity.destroy({id})")
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"City.destroy({id})")
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"Place.destroy({id})")
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"Review.destroy({id})")
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"State.destroy({id})")
+            self.assertEqual(models.storage.all(), {})
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"User.destroy({id})")
+            self.assertEqual(models.storage.all(), {})
+
+    def test_count(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count BaseModel")
+            count = f.getvalue().strip()
+            self.assertEqual(count, "0")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Amenity")
+            count = f.getvalue().strip()
+            self.assertEqual(count, "0")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count City")
+            count = f.getvalue().strip()
+            self.assertEqual(count, "0")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Place")
+            count = f.getvalue().strip()
+            self.assertEqual(count, "0")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Review")
+            count = f.getvalue().strip()
+            self.assertEqual(count, "0")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count State")
+            count = f.getvalue().strip()
+            self.assertEqual(count, "0")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count User")
+            count = f.getvalue().strip()
+            self.assertEqual(count, "0")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
