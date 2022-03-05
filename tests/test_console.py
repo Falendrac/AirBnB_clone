@@ -236,7 +236,7 @@ class TestFunctions(unittest.TestCase):
         """
         Check the all functions
         Check first all the edges cases, then the creation of
-        instances 
+        instances
         """
         output = "** class doesn't exist **"
         with patch('sys.stdout', new=StringIO()) as f:
@@ -707,15 +707,200 @@ class TestFunctions(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create BaseModel")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count BaseModel")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "3")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"destroy BaseModel {id}")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count BaseModel")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "2")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            id = f.getvalue().strip()
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
         with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count User")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "3")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"destroy User {id}")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count User")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "2")
+
+        with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create Amenity")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Amenity")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "3")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"destroy Amenity {id}")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Amenity")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "2")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            id = f.getvalue().strip()
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create City")
         with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count City")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "3")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"destroy City {id}")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count City")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "2")
+
+        with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create Place")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Place")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "3")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"destroy Place {id}")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Place")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "2")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+            id = f.getvalue().strip()
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create Review")
         with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Review")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "3")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"destroy Review {id}")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Review")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "2")
+
+        with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create State")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count State")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "3")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"destroy State {id}")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count State")
+            countOne = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.count()")
+            countTwo = f.getvalue().strip()
+        self.assertEqual(countOne, countTwo)
+        self.assertEqual(countOne, "2")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.count(blablabla)")
+            count = f.getvalue().strip()
+        self.assertEqual(count, "2")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count State blablabla")
+            count = f.getvalue().strip()
+        self.assertEqual(count, "2")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Axel")
+            count = f.getvalue().strip()
+        self.assertEqual(count, "0")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Axel.count()")
+            count = f.getvalue().strip()
+        self.assertEqual(count, "0")
