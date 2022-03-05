@@ -75,12 +75,15 @@ class TestPlace(unittest.TestCase):
         del self.my_model_json
 
     def test_idStr(self):
+        """test the id str"""
         self.assertEqual(type(self.my_model1.id), str)
 
     def test_uniqueId(self):
+        """test if the id is unique"""
         self.assertNotEqual(self.my_model1.id, self.my_model2.id)
 
     def test_DateTimeCreated(self):
+        """test if datetime is created"""
         self.assertEqual(self.my_model1.created_at, self.my_model1.updated_at)
         self.assertNotEqual(self.my_model1.created_at,
                             self.my_model2.created_at)
@@ -91,6 +94,7 @@ class TestPlace(unittest.TestCase):
                             self.my_model2.updated_at)
 
     def test_strRepr(self):
+        """test if repr is str"""
         strRep = self.my_model1.__str__()
         self.assertIn(f"[Place] ({self.my_model1.id})", strRep)
         self.assertIn(f"'id': '{self.my_model1.id}'", strRep)
@@ -100,9 +104,11 @@ class TestPlace(unittest.TestCase):
             f"'updated_at': {repr(self.my_model1.updated_at)}", strRep)
 
     def test_ToDictContainsAddedAttributes(self):
+        """test if dict contaisn attribute"""
         self.assertIn("my_number", self.my_model_json)
 
     def test_attribute_exist(self):
+        """test if attribute exist"""
         self.assertTrue("city_id" in dir(self.my_model1))
         self.assertTrue("user_id" in dir(self.my_model1))
         self.assertTrue("name" in dir(self.my_model1))
@@ -116,6 +122,7 @@ class TestPlace(unittest.TestCase):
         self.assertTrue("amenity_ids" in dir(self.my_model1))
 
     def test_attribute_type(self):
+        """test if attribute is a good type"""
         self.assertTrue(type(self.my_model1.city_id) is str)
         self.assertTrue(type(self.my_model1.user_id) is str)
         self.assertTrue(type(self.my_model1.name) is str)
@@ -129,6 +136,7 @@ class TestPlace(unittest.TestCase):
         self.assertTrue(type(self.my_model1.amenity_ids) is list)
 
     def test_attribute_empty(self):
+        """test if attribute is empty"""
         self.assertTrue(type(self.my_model1.city_id) is str)
         self.assertTrue(type(self.my_model1.user_id) is str)
         self.assertTrue(type(self.my_model1.name) is str)
@@ -142,12 +150,14 @@ class TestPlace(unittest.TestCase):
         self.assertTrue(type(self.my_model1.amenity_ids) is list)
 
     def test_attribute_change(self):
+        """test attribute change"""
         self.my_model1.first_name = 48
 
         self.assertTrue(type(self.my_model1.first_name) is not str)
         self.assertTrue(self.my_model1.first_name == 48)
 
     def test_serialization(self):
+        """test serialization"""
         self.assertEqual(
             str(self.my_model1), f"[Place] ({self.my_model1.id}) {self.my_model1.__dict__}")
         dictJson = self.my_model1.__dict__.copy()

@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+Test for the file storage module
+"""
+
 
 import json
 import os

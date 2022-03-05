@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
             If the Id do not exist
         """
         if not line:
-            print("** class name missing ** ")
+            print("** class name missing **")
             return False
         data = shlex.split(line)
         if data[0] not in self.classes:
@@ -140,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
             If the Id do not exist
         """
         if not line:
-            print("** class name missing ** ")
+            print("** class name missing **")
             return False
         data = shlex.split(line)
         if data[0] not in self.classes:
@@ -215,7 +215,7 @@ class HBNBCommand(cmd.Cmd):
             If the value is missing
         """
         if not line:
-            print("** class name missing ** ")
+            print("** class name missing **")
             return False
         data = shlex.split(line)
         if data[0] not in self.classes:

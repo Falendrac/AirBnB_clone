@@ -42,6 +42,7 @@ class TestCity(unittest.TestCase):
         del self.myCity
 
     def test_new_instance_stored_in_objects(self):
+        """test new instance stored"""
         self.assertIn(self.myCity, models.storage.all().values())
 
     def test_attribute_exist(self):
