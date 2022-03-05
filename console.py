@@ -241,6 +241,7 @@ class HBNBCommand(cmd.Cmd):
                 data[3] = int(data[3])
             elif self.is_float(data[3]):
                 data[3] = float(data[3])
+            data[3] = data[3].replace("\"", "")
             setattr(currentInstance, data[2], data[3])
         models.storage.save()
 
@@ -250,7 +251,6 @@ class HBNBCommand(cmd.Cmd):
         """
         print('Manage the EOF, exit the console and\
 save all the created instance\n')
-
 
     def help_quit(self):
         """
