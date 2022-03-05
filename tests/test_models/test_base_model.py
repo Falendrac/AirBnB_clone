@@ -193,7 +193,3 @@ class TestSaveBaseModel(unittest.TestCase):
         with open("file.json", "r") as f:
             buf = f.read()
             self.assertIn("BaseModel.", buf)
-
-
-if __name__ == '__main__':
-    unittest.main
