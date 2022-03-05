@@ -43,30 +43,15 @@ class HBNBCommand(cmd.Cmd):
                         "count": self.do_count,
                         "update": self.do_update
                         }
-        args = line.split(".")
-        command = ""
-        arguments = ""
-        beforeParentheses = 1
-        if len(args) == 1:
-            print(f"*** Unknown syntax: {line}")
-            return False
-        for i in range(len(args[1])):
-            if args[1][i] == "(":
-                beforeParentheses = 0
-            if beforeParentheses:
-                command += args[1][i]
-            else:
-                arguments = args[1][i+1:-1]
-                break
-        if command in functionDict:
-            arguments = arguments.replace(",", "")
-            arguments = arguments.replace('"', '')
-            if args[0] == "update":
-                self.update_in_dict(args[1], line)
-            elif not arguments:
-                functionDict[command](str(args[0]))
-            else:
-                functionDict[command](str(args[0] + " " + arguments))
+        patern = r"(.*)\.(.*)\((.*)\)"
+        if re.search(patern, line):
+            args = re.sub(patern, r"\2 \1 \3", line)
+            args = shlex.split(args)
+            if args[0] in functionDict:
+                if args[0] == "update":
+                    self.update_in_dict(args[1], line)
+                else:
+                    functionDict[args[0]](' '.join(args[1:]))
         else:
             print(f"*** Unknown syntax: {line}")
 
