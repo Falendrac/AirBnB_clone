@@ -287,6 +287,13 @@ Usage: all <className>\n\
 Usage: update <class name> <id> <attribute name> "<attribute value>"\n'
         )
 
+    def help_count(self):
+        """
+        Help section of count
+        """
+        print('Count the number of given ClassName instance\n\
+Usage : count <class name>')
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
