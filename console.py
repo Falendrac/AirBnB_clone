@@ -3,6 +3,8 @@
 Creation of the console of the web application
 """
 
+
+import json
 import re
 import shlex
 import cmd
@@ -27,8 +29,7 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """
         Default section, all the command not built-in gonna be procces here
-        Process all the command line as : ClassName.function,
-        where function is:
+        Process all the command line as: ClassName.function, where function is:
             all()
             show()
             destroy()
@@ -39,7 +40,9 @@ class HBNBCommand(cmd.Cmd):
         functionDict = {"all": self.do_all,
                         "show": self.do_show,
                         "destroy": self.do_destroy,
-                        "count": self.do_count}
+                        "count": self.do_count,
+                        "update": self.do_update
+                        }
         args = line.split(".")
         command = ""
         arguments = ""
@@ -58,7 +61,9 @@ class HBNBCommand(cmd.Cmd):
         if command in functionDict:
             arguments = arguments.replace(",", "")
             arguments = arguments.replace('"', '')
-            if not arguments:
+            if args[0] == "update":
+                self.update_in_dict(args[1], line)
+            elif not arguments:
                 functionDict[command](str(args[0]))
             else:
                 functionDict[command](str(args[0] + " " + arguments))
@@ -186,6 +191,31 @@ class HBNBCommand(cmd.Cmd):
                     instanceListStr.append(instance.__str__())
         print(instanceListStr)
 
+    def update_in_dict(self, classname, line):
+        """
+        Convert argument passes in command in dictionnary
+        for the command update and call the function do_update with all key
+        """
+        dictRepr = re.findall("({.*})", line)
+        dictRepr[0] = dictRepr[0].replace('\'', "\"")
+        args = json.loads(dictRepr[0])
+        line_catch = re.findall("(\".*?\")", line)
+        id_line = line_catch[0].replace("\"", "")
+        for key, val in args.items():
+            self.do_update(
+                classname + " " + id_line + " " + key + " " + str(val)
+            )
+
+    def is_float(self, num):
+        """
+        Check if the string is a number
+        """
+        try:
+            float(num)
+            return True
+        except ValueError:
+            return False
+
     def do_update(self, line):
         """
         Update an attribute of an instance.
@@ -222,6 +252,10 @@ class HBNBCommand(cmd.Cmd):
         currentInstance = models.storage.all()[strLine]
         if data[2] != "id" or data[2] != "created_at"\
                 or data[2] != "updated_at":
+            if data[3].isnumeric():
+                data[3] = int(data[3])
+            elif self.is_float(data[3]):
+                data[3] = float(data[3])
             setattr(currentInstance, data[2], data[3])
         models.storage.save()
 
@@ -231,6 +265,7 @@ class HBNBCommand(cmd.Cmd):
         """
         print('Manage the EOF, exit the console and\
 save all the created instance\n')
+
 
     def help_quit(self):
         """

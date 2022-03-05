@@ -50,8 +50,8 @@ class FileStorage:
 
     def reload(self):
         """
-        Read the saved json file, and realod the content into the
-        __object attribute
+        Read the saved json file,
+        and realod the content into the __object attribute
         """
         try:
             with open(self.__file_path, "r+") as file:
