@@ -67,111 +67,67 @@ class TestEngineFileStorage(unittest.TestCase):
     Check the File Storage Class
     """
 
+    path = "models/engine/file_storage.py"  # models/FileStorage.py
+    file = os.path.splitext(path)[0].replace("/", ".")  # file to test
+
     def setUp(self):
-        """
-        Set up all the test
-        """
         try:
-            os.rename("file.json", "tmp.json")
-        except IOError:
+            shutil.copyfile("file.json", "tmp_file.json")
+            os.remove("file.json")
+            open("file.json", "w").close()
+        except Exception:
             pass
-        FileStorage._FileStorage__objects = {}
 
     def tearDown(self):
-        """
-        Close all the test
-        """
         try:
-            os.remove("file.json")
-        except IOError:
+            shutil.copyfile("tmp_file.json", "file.json")
+            os.remove("tmp_file.json")
+        except Exception:
             pass
-        try:
-            os.rename("tmp.json", "file.json")
-        except IOError:
-            pass
-        FileStorage._FileStorage__objects = {}
 
-    def test_createNewInstance(self):
-        """
-        Check the creation of news instances, check if there are well
-        implemented
-        into the storage dict
-        """
-        newBaseModel = BaseModel()
-        newAmenity = Amenity()
-        newPlace = Place()
-        newCity = City()
-        newReview = Review()
-        newState = State()
-        newUser = User()
-        for className in ["BaseModel." + newBaseModel.id,
-                          "Amenity." + newAmenity.id,
-                          "Place." + newPlace.id,
-                          "City." + newCity.id,
-                          "Review." + newReview.id,
-                          "State." + newState.id,
-                          "User." + newUser.id]:
-            self.assertIn(className, models.storage.all().keys())
+    def test_attributes_assignement(self):
+        self.assertIn("_FileStorage__objects", FileStorage.__dict__)
+        self.assertIsInstance(FileStorage._FileStorage__objects, dict)
+        self.assertIn("_FileStorage__file_path", FileStorage.__dict__)
+        self.assertIsInstance(FileStorage._FileStorage__file_path, str)
 
-    def test_checkSave(self):
-        """
-        Check the creation of news instances, check if there are well
-        implemented
-        into the json file
-        """
-        newBaseModel = BaseModel()
-        newAmenity = Amenity()
-        newPlace = Place()
-        newCity = City()
-        newReview = Review()
-        newState = State()
-        newUser = User()
-        models.storage.save()
-        with open("file.json", 'r') as f:
-            buf = json.load(f)
-        for className in ["BaseModel." + newBaseModel.id,
-                          "Amenity." + newAmenity.id,
-                          "Place." + newPlace.id,
-                          "City." + newCity.id,
-                          "Review." + newReview.id,
-                          "State." + newState.id,
-                          "User." + newUser.id]:
-            self.assertIn(className, buf.keys())
+    def test_all(self):
+        models.storage._FileStorage__objects = {}
+        self.assertFalse(models.storage.all())
+        models.storage._FileStorage__objects = {"Hello": "olleH"}
+        self.assertTrue(models.storage.all())
 
-    def test_checkRelaod(self):
-        """
-        Check the creation of news instances, check if there are well
-        implemented
-        with the realod method
-        """
-        newBaseModel = BaseModel()
-        newAmenity = Amenity()
-        newPlace = Place()
-        newCity = City()
-        newReview = Review()
-        newState = State()
-        newUser = User()
-        models.storage.save()
-        FileStorage._FileStorage__objects = {}
+    # def test_save(self):
+    #     models.storage._FileStorage__objects = ""
+    #     models.storage.save()
+    #     with open("file.json", "r") as f:
+    #         exception = f.read()
+    #     self.assertTrue(exception)
+
+    def test_reload(self):
+        models.storage._FileStorage__objects = {}
+        self.assertFalse(models.storage.all())
+        with open("file.json", "w") as f:
+            f.write(json.dumps({
+                "BaseModel.70549f31-bff4-4a34-bd10-b8eaaeb3bb6b":
+                {"id": "70549f31-bff4-4a34-bd10-b8eaaeb3bb6b", "created_at":
+                 "2022-03-01T20:27:24.506780", "updated_at":
+                 "2022-03-01T20:27:24.506790", "__class__":
+                 "BaseModel"}}))
         models.storage.reload()
-        for className in ["BaseModel." + newBaseModel.id,
-                          "Amenity." + newAmenity.id,
-                          "Place." + newPlace.id,
-                          "City." + newCity.id,
-                          "Review." + newReview.id,
-                          "State." + newState.id,
-                          "User." + newUser.id]:
-            self.assertIn(className, models.storage.all().keys())
+        self.assertTrue(models.storage.all())
 
-    def test_checkArgu(self):
-        """
-        Check all method with arguments
-        """
-        with self.assertRaises(AttributeError):
-            models.storage.new("Coucou")
-        with self.assertRaises(TypeError):
-            models.storage.save("Coucou")
-        with self.assertRaises(TypeError):
-            models.storage.all("Coucou")
-        with self.assertRaises(TypeError):
-            models.storage.reload("Coucou")
+    def test_new(self):
+        models.storage._FileStorage__objects = {}
+        models.storage.new(User())
+        models.storage.save()
+        self.assertTrue(models.storage._FileStorage__objects)
+
+    def test_save_new(self):
+        models.storage._FileStorage__objects = {}
+        self.assertFalse(models.storage.all())
+        models.storage.new(User())
+        models.storage.save()
+        models.storage.reload()
+        self.assertEqual(models.storage.all(), models.storage.__dict__[
+                         '_FileStorage__objects'])
