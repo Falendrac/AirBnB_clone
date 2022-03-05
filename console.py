@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
             args = re.sub(patern, r"\2 \1 \3", line)
             args = shlex.split(args)
             if args[0] in functionDict:
-                if args[0] == "update":
+                if args[0] == "update" and "{" in line and "}" in line:
                     self.update_in_dict(args[1], line)
                 else:
                     functionDict[args[0]](' '.join(args[1:]))
@@ -217,7 +217,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing ** ")
             return False
-        data = line.split(" ")
+        data = shlex.split(line)
         if data[0] not in self.classes:
             print("** class doesn't exist **")
             return False
@@ -235,7 +235,6 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return False
         currentInstance = models.storage.all()[strLine]
-        print(len(data[2]))
         if data[2] == "id" or data[2] == "created_at" or\
                 data[2] == "updated_at":
             return False
@@ -243,7 +242,6 @@ class HBNBCommand(cmd.Cmd):
             data[3] = int(data[3])
         elif self.is_float(data[3]):
             data[3] = float(data[3])
-        data[3] = data[3].replace("\"", "")
         setattr(currentInstance, data[2], data[3])
         models.storage.save()
 
