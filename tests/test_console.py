@@ -610,7 +610,10 @@ class TestFunctions(unittest.TestCase):
             className = f"[State] ({id})"
             self.assertIn(className, f.getvalue().strip())
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show State " + id + " Je suis un text inutile show State " + id)
+            HBNBCommand().onecmd(
+                "show State " + id +
+                " Je suis un text inutile show State " + id
+            )
             className = f"[State] ({id})"
             self.assertIn(className, f.getvalue().strip())
 
