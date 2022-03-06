@@ -1218,3 +1218,222 @@ class TestFunctions(unittest.TestCase):
             HBNBCommand().onecmd(f'show User {id}')
             dictClass = f.getvalue().strip()
         self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'BaseModel.update({id}, name, Betty)')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show BaseModel {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'BaseModel.update({id}, name, "Betty")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show BaseModel {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'Amenity.update({id}, name, Betty)')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Amenity {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'Amenity.update({id}, name, "Betty")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Amenity {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'City.update({id}, name, Betty)')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show City {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'City.update({id}, name, "Betty")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show City {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'City.update({id}, name, Betty)')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show City {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'City.update({id}, name, "Betty")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show City {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'Place.update({id}, name, Betty)')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Place {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'Place.update({id}, name, "Betty")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Place {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'Review.update({id}, name, Betty)')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Review {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'Review.update({id}, name, "Betty")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Review {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'State.update({id}, name, Betty)')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show State {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'State.update({id}, name, "Betty")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show State {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            id = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'User.update({id}, name, Betty)')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show User {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'User.update({id}, name, "Betty")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show User {id}')
+            dictClass = f.getvalue().strip()
+        self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            id = f.getvalue().strip()
+        command = f'BaseModel.update("{id}", '
+        command += '{"name": "Betty"})'
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(command)
+            text = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show BaseModel {id}')
+            dictClass = f.getvalue().strip()
+            self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+            id = f.getvalue().strip()
+        command = f'Amenity.update("{id}", '
+        command += '{"name": "Betty"})'
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(command)
+            text = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Amenity {id}')
+            dictClass = f.getvalue().strip()
+            self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            id = f.getvalue().strip()
+        command = f'City.update("{id}", '
+        command += '{"name": "Betty"})'
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(command)
+            text = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show City {id}')
+            dictClass = f.getvalue().strip()
+            self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+            id = f.getvalue().strip()
+        command = f'Place.update("{id}", '
+        command += '{"name": "Betty"})'
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(command)
+            text = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Place {id}')
+            dictClass = f.getvalue().strip()
+            self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+            id = f.getvalue().strip()
+        command = f'Review.update("{id}", '
+        command += '{"name": "Betty"})'
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(command)
+            text = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show Review {id}')
+            dictClass = f.getvalue().strip()
+            self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+            id = f.getvalue().strip()
+        command = f'State.update("{id}", '
+        command += '{"name": "Betty"})'
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(command)
+            text = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show State {id}')
+            dictClass = f.getvalue().strip()
+            self.assertIn("'name': 'Betty'", dictClass)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            id = f.getvalue().strip()
+        command = f'User.update("{id}", '
+        command += '{"name": "Betty"})'
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(command)
+            text = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'show User {id}')
+            dictClass = f.getvalue().strip()
+            self.assertIn("'name': 'Betty'", dictClass)
