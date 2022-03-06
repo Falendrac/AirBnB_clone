@@ -159,7 +159,9 @@ class TestPlace(unittest.TestCase):
     def test_serialization(self):
         """test serialization"""
         self.assertEqual(
-            str(self.my_model1), f"[Place] ({self.my_model1.id}) {self.my_model1.__dict__}")
+            str(self.my_model1),
+            f"[Place] ({self.my_model1.id}) {self.my_model1.__dict__}"
+        )
         dictJson = self.my_model1.__dict__.copy()
         dictJson["__class__"] = self.my_model1.__class__.__name__
         dictJson["created_at"] = dictJson["created_at"].isoformat()
