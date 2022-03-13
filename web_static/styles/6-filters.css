@@ -86,7 +86,6 @@
 
 .popover ul{
     list-style-type: none;
-    margin-bottom: 30px;
 }
 
 .popover h2 {
@@ -97,4 +96,8 @@
 }
 .locations:hover .popover{
     display: block;
+}
+
+.listlocations {
+    margin-bottom: 15px;
 }
